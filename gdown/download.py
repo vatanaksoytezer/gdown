@@ -240,7 +240,10 @@ def download(
             res.headers["Content-Disposition"]
         )
         m = re.search(r"filename\*=UTF-8''(.*)", content_disposition)
-        filename_from_url = m.groups()[0]
+        if m is None and output is not None:
+            filename_from_url = osp.basename(output)
+        else:
+            filename_from_url = m.groups()[0]
         filename_from_url = filename_from_url.replace(osp.sep, "_")
     else:
         filename_from_url = osp.basename(url)
